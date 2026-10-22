@@ -78,6 +78,8 @@ window.renderJobsScreen = function(root) {
         state.player.coins += reward;
         state.jobs.washProgress = 0;
         state.jobs.washCooldownEnd = Date.now() + 60 * 1000;
+        window.progressQuest('jobs', 1);
+        window.addXp(100);
         window.saveState();
         alert('+ ' + window.formatMoney(reward));
         window.navigate('jobs');
@@ -104,6 +106,8 @@ window.renderJobsScreen = function(root) {
       state.player.coins += 300;
       state.player.spinTickets += 1;
       state.jobs.courierStart = 0;
+      window.progressQuest('jobs', 1);
+      window.addXp(100);
       window.saveState();
       alert('+ ' + window.formatMoney(300) + ' + 🎟️ 1');
       window.navigate('jobs');
@@ -142,6 +146,8 @@ window.renderJobsScreen = function(root) {
       const reward = inTarget ? 500 : 100;
       state.player.coins += reward;
       state.jobs.lotteryCooldownEnd = Date.now() + 30 * 1000;
+      window.progressQuest('jobs', 1);
+      window.addXp(100);
       window.saveState();
       
       if (window.Telegram?.WebApp?.HapticFeedback) {

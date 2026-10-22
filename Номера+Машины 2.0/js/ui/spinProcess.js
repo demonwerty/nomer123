@@ -96,6 +96,10 @@ window.renderSpinProcess = function(root, params) {
 
         // Инкремент rookie-счётчика
         state.player.rookieSpinsUsed = (state.player.rookieSpinsUsed || 0) + 1;
+
+        // Прогресс ежедневного квеста и опыт
+        window.progressQuest('spins', 1);
+        window.addXp(50);
         
         document.getElementById('spin-result').innerHTML = resultHtml;
         document.querySelector('.balance').innerHTML = `<span class="bal-item">🪙 ${window.formatMoney(state.player.coins)}</span>`;

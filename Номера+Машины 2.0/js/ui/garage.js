@@ -82,6 +82,7 @@ window.equipPlate = function(carId, plateId) {
   if (!car || !plate) return;
   car.plateId = plate.id;
   plate.equippedCarId = carId;
+  window.progressQuest('platesEquipped', 1);
   window.saveState();
   window.navigate('garage');
 };
