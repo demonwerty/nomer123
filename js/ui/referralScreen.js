@@ -1,4 +1,4 @@
-// Реферальная система (заглушка). Код хранится в state.player.refCode.
+// Реферальная система: реф-код, копирование и шеринг в Telegram.
 function copyTextFallback(text) {
   const ta = document.createElement('textarea');
   ta.value = text;
@@ -94,15 +94,15 @@ window.copyRefCode = function() {
 };
 
 window.inviteFriend = function() {
-  const code = window.ensureRefCode();
-  const text = window.t('referral_share_text').replace('{code}', code);
-  const shareUrl = 'https://t.me/share/url?url=' +
-    encodeURIComponent(window.GARAGE_SPIN_BOT_LINK) +
-    '&text=' + encodeURIComponent(text);
+  const refCode = window.ensureRefCode();
+  const inviteLink = window.GARAGE_SPIN_BOT_LINK + '?startapp=' + encodeURIComponent(refCode);
+  const shareText = window.t('referral_share_text').replace('{code}', refCode);
+  const telegramShareUrl = 'https://t.me/share/url?url=' +
+    encodeURIComponent(inviteLink) + '&text=' + encodeURIComponent(shareText);
 
   if (window.Telegram?.WebApp?.openTelegramLink) {
-    window.Telegram.WebApp.openTelegramLink(shareUrl);
+    window.Telegram.WebApp.openTelegramLink(telegramShareUrl);
   } else {
-    window.open(shareUrl, '_blank');
+    window.open(telegramShareUrl, '_blank');
   }
 };

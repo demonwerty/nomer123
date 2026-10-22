@@ -230,6 +230,101 @@ html, body {
   z-index: 10;
   box-shadow: 0 0 10px var(--accent);
 }
+
+/* Вертикальная рулетка для номеров: лента едет снизу вверх, финальный номер остаётся в центре. */
+.reel-window--vertical {
+  --reel-window-h: 200px;
+  --reel-item-h: 96px;
+  --reel-gap: 8px;
+  height: var(--reel-window-h);
+  display: block;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(255, 107, 0, 0.08), transparent 68%),
+    var(--bg-2);
+  border-color: rgba(255, 107, 0, 0.32);
+  box-shadow:
+    inset 0 0 34px rgba(0, 0, 0, 0.62),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+.reel-window--vertical::before,
+.reel-window--vertical::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  height: 30px;
+  pointer-events: none;
+}
+.reel-window--vertical::before {
+  top: 0;
+  background: linear-gradient(180deg, var(--bg-2), transparent);
+}
+.reel-window--vertical::after {
+  bottom: 0;
+  background: linear-gradient(0deg, var(--bg-2), transparent);
+}
+.reel-items--vertical {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--reel-gap);
+  padding: calc((var(--reel-window-h) - var(--reel-item-h)) / 2) 10px;
+  will-change: transform;
+}
+.reel-items--vertical .reel-item {
+  width: 100%;
+  height: var(--reel-item-h);
+  flex: 0 0 var(--reel-item-h);
+  border-radius: 12px;
+}
+.reel-item--plate {
+  padding: 8px 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(0, 0, 0, 0.18));
+  border: 1px solid rgba(255, 255, 255, 0.055);
+}
+.reel-item--plate .real-plate {
+  max-width: 300px;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.reel-item--car {
+  flex-direction: column;
+  gap: 2px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+}
+.reel-car-emoji { font-size: 36px; line-height: 1; }
+.reel-car-name {
+  max-width: 90%;
+  overflow: hidden;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.reel-item.is-selected .real-plate {
+  transform: scale(1.015);
+  box-shadow:
+    0 0 0 2px var(--accent),
+    0 0 24px rgba(255, 107, 0, 0.38),
+    0 10px 24px rgba(0, 0, 0, 0.5);
+}
+.reel-item.is-selected .reel-car-emoji {
+  filter: drop-shadow(0 0 10px rgba(255, 107, 0, 0.55));
+}
+.reel-pointer--horizontal {
+  top: 50%;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  width: auto;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent, var(--accent) 16%, var(--accent) 84%, transparent);
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.7);
+}
 /* Income banner */
 .income-banner {
   background: linear-gradient(135deg, rgba(76,175,80,0.15), rgba(76,175,80,0.05));
@@ -275,6 +370,101 @@ html, body {
   letter-spacing: 1px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
+
+/* Настоящий номерной знак: основное поле + правая полоса региона/страны. */
+.plate-slot {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+.plate-slot .real-plate { max-width: 100%; }
+
+.real-plate {
+  --plate-band: #0a3d91;
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  min-height: 34px;
+  aspect-ratio: 4.45 / 1;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f0e8 100%);
+  border: 2px solid #0b0b0b;
+  border-radius: 4px;
+  color: #0b0b0b;
+  font-family: 'Courier New', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 900;
+  box-shadow:
+    0 2px 0 #000,
+    0 5px 12px rgba(0, 0, 0, 0.44),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.real-plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 38%, rgba(0, 0, 0, 0.04));
+}
+.real-plate-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18em 0.2em 0.18em 0.35em;
+  font-size: clamp(16px, 5vw, 28px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.real-plate-side {
+  flex: 0 0 21%;
+  display: flex;
+  flex-direction: column;
+  min-width: 34px;
+  max-width: 64px;
+  overflow: hidden;
+  background: var(--plate-band);
+  border-left: 2px solid #0b0b0b;
+  color: #fff;
+  text-align: center;
+}
+.real-plate-region {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.38);
+  font-size: clamp(11px, 3.4vw, 17px);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+.real-plate-country {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 2px 1px;
+  font-size: clamp(6px, 1.7vw, 9px);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.real-plate-flag { font-size: clamp(8px, 2.3vw, 13px); line-height: 1; }
+.real-plate-code { font-weight: 700; }
+
+.real-plate--ru { --plate-band: #0a3d91; }
+.real-plate--kz { --plate-band: #00a3dd; }
+.real-plate--by { --plate-band: #2e7d32; }
+.real-plate--us { --plate-band: #b22234; }
 
 /* Modal */
 .modal-overlay {
@@ -1170,5 +1360,6 @@ html, body {
   .referral-invite-btn,
   .bottom-back-btn,
   .back-btn,
-  .bottom-back-btn .back-arrow { transition: none; }
+  .bottom-back-btn .back-arrow,
+  .reel-item--plate .real-plate { transition: none; }
 }

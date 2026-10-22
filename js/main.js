@@ -45,9 +45,10 @@ window.i18n = {
     referral_copy_failed: 'Не удалось скопировать. Выдели код вручную.',
     referral_invite: 'Пригласить друга',
     referral_reward: 'За каждого друга: +1000 монет, +5 билетов (Скоро!)',
-    referral_share_text: 'Залетай в Garage Spin! Мой код: {code}',
+    referral_share_text: 'Залетай в Garage Spin! Крути тачки и номера. Мой код: {code}',
     referral_soon: 'Бонусы за приглашённых друзей появятся в следующем обновлении.',
     referral_friends: 'Приглашено друзей',
+    referral_joined: 'Вас пригласил друг!',
   },
   en: {
     menu_cars: 'Cars', menu_plates: 'Plates', menu_garage: 'Garage', menu_jobs: 'Jobs',
@@ -92,9 +93,10 @@ window.i18n = {
     referral_copy_failed: 'Could not copy. Select the code manually.',
     referral_invite: 'Invite a friend',
     referral_reward: 'Per friend: +1000 coins, +5 tickets (Coming soon!)',
-    referral_share_text: 'Join Garage Spin! My code: {code}',
+    referral_share_text: 'Join Garage Spin! Spin cars and plates. My code: {code}',
     referral_soon: 'Rewards for invited friends are coming in the next update.',
     referral_friends: 'Friends invited',
+    referral_joined: 'A friend invited you!',
   }
 };
 
@@ -109,8 +111,8 @@ window.formatMoney = function(amount) {
   return amount + ' ₽';
 };
 
-// Ссылка на бота для рефералки. Замени на своего бота при деплое.
-window.GARAGE_SPIN_BOT_LINK = 'https://t.me/garage_spin_bot/app';
+// Ссылка на бота для рефералки.
+window.GARAGE_SPIN_BOT_LINK = 'https://t.me/perekup_garage_bot/play';
 
 // Локальная дата в формате YYYY-MM-DD (для сброса квестов)
 window.todayDateStr = function() {
@@ -410,6 +412,7 @@ function init() {
   if (!app.state.player.level) app.state.player.level = 1;
   if (typeof app.state.player.xp !== 'number') app.state.player.xp = 0;
   if (app.state.player.refCode === undefined) app.state.player.refCode = null;
+  if (app.state.player.referredBy === undefined) app.state.player.referredBy = null;
   if (!app.state.settings) app.state.settings = { lang: 'ru', sound: true, haptic: true };
   if (app.state.settings.sound === undefined) app.state.settings.sound = true;
   if (app.state.settings.haptic === undefined) app.state.settings.haptic = true;
@@ -423,6 +426,14 @@ function init() {
   window.ensureQuestReset();
   // Реф-код создаём один раз
   window.ensureRefCode();
+
+  // Читаем startapp-параметр Telegram: ?startapp=<refCode>
+  const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param;
+  if (startParam && !app.state.player.referredBy && startParam !== app.state.player.refCode) {
+    app.state.player.referredBy = String(startParam);
+    window.saveState();
+    alert(window.t('referral_joined'));
+  }
 
   if (app.state.cars.length === 0) {
     app.state.cars.push({ id: 'car_start', templateId: 'vaz_2101', name: 'ВАЗ-2101', rarity: 'Common', baseIncome: 10, color: '#8a4a2b', plateId: null });
