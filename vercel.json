@@ -1,0 +1,19 @@
+{
+  "rewrites": [
+    { "source": "/js/(.*)", "destination": "/js/$1" },
+    { "source": "/css/(.*)", "destination": "/css/$1" },
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://telegram.org https://*.telegram.org"
+        }
+      ]
+    }
+  ]
+}
