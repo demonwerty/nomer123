@@ -33,13 +33,21 @@ window.renderReferralScreen = function(root) {
     <h2 class="screen-title">👥 ${window.t('referral_title')}</h2>
     <p class="screen-subtitle">${window.t('referral_subtitle')}</p>
 
-    <div class="referral-card">
+    <div class="referral-pass">
       <div class="referral-glow"></div>
+      <div class="referral-pass-top">
+        <span class="referral-brand">GARAGE SPIN</span>
+        <span class="referral-pass-label">${window.t('referral_pass')}</span>
+      </div>
       <div class="referral-card-icon">🎁</div>
       <div class="referral-label">${window.t('referral_your_code')}</div>
-      <div class="ref-code-box">
-        <span class="ref-code" id="ref-code">${refCode}</span>
-        <button class="ref-copy-btn" onclick="window.copyRefCode()">📋 ${window.t('referral_copy')}</button>
+      <div class="ref-code-row">
+        <div class="ref-plate">
+          <span class="ref-plate-country">GS</span>
+          <span class="ref-code" id="ref-code">${refCode}</span>
+        </div>
+        <button class="ref-copy-btn" onclick="window.copyRefCode()"
+          title="${window.t('referral_copy')}" aria-label="${window.t('referral_copy')}">📋</button>
       </div>
       <div class="referral-stats">
         <div class="referral-stat">
@@ -49,8 +57,8 @@ window.renderReferralScreen = function(root) {
       </div>
     </div>
 
-    <button class="menu-btn primary referral-invite-btn" onclick="window.inviteFriend()">
-      🚀 ${window.t('referral_invite')}
+    <button class="referral-invite-btn" onclick="window.inviteFriend()">
+      <span class="referral-invite-icon">✈️</span> ${window.t('referral_invite')}
     </button>
 
     <div class="referral-reward-note">
@@ -58,6 +66,10 @@ window.renderReferralScreen = function(root) {
       <span>${window.t('referral_reward')}</span>
     </div>
     <p class="referral-soon">${window.t('referral_soon')}</p>
+
+    <button class="bottom-back-btn" onclick="window.navigate('menu')">
+      <span class="back-arrow">←</span> ${window.t('back')}
+    </button>
   `;
 };
 

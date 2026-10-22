@@ -1,8 +1,8 @@
 // Ежедневные квесты. Данные хранятся в state.quests (см. js/main.js).
 window.QUESTS_CONFIG = [
-  { id: 'spins', progressKey: 'spins', titleKey: 'quest_spins', icon: '🎰', goal: 5, coins: 300, tickets: 0, xp: 100 },
-  { id: 'jobs', progressKey: 'jobs', titleKey: 'quest_jobs', icon: '💼', goal: 3, coins: 0, tickets: 2, xp: 150 },
-  { id: 'plates', progressKey: 'platesEquipped', titleKey: 'quest_plates', icon: '🪪', goal: 1, coins: 200, tickets: 0, xp: 50 }
+  { id: 'spins', progressKey: 'spins', titleKey: 'quest_spins', descKey: 'quest_spins_desc', icon: '🎰', goal: 5, coins: 300, tickets: 0, xp: 100 },
+  { id: 'jobs', progressKey: 'jobs', titleKey: 'quest_jobs', descKey: 'quest_jobs_desc', icon: '💼', goal: 3, coins: 0, tickets: 2, xp: 150 },
+  { id: 'plates', progressKey: 'platesEquipped', titleKey: 'quest_plates', descKey: 'quest_plates_desc', icon: '🪪', goal: 1, coins: 200, tickets: 0, xp: 50 }
 ];
 
 window.renderQuestsScreen = function(root) {
@@ -27,27 +27,28 @@ window.renderQuestsScreen = function(root) {
     } else if (done) {
       actionHtml = `<button class="quest-claim ready" onclick="window.claimQuest('${def.id}')">${window.t('quest_claim')}</button>`;
     } else {
-      actionHtml = `<button class="quest-claim" disabled>${window.t('quest_in_progress')}</button>`;
+      actionHtml = `<button class="quest-claim" disabled>${window.t('quest_claim')}</button>`;
     }
 
     return `
       <div class="quest-card ${done && !claimed ? 'done' : ''} ${claimed ? 'is-claimed' : ''}">
-        <div class="quest-main">
-          <div class="quest-icon">${def.icon}</div>
-          <div class="quest-info">
-            <div class="quest-title">${window.t(def.titleKey)}</div>
-            <div class="quest-progress-row">
-              <span>${Math.min(value, def.goal)} / ${def.goal}</span>
-              <span class="quest-status">${claimed ? window.t('quest_claimed') : (done ? window.t('quest_done') : '')}</span>
-            </div>
-            <div class="quest-track"><div class="quest-fill" style="width: ${claimed ? 100 : percent}%"></div></div>
-            <div class="quest-rewards">
-              <span class="quest-reward-label">${window.t('quest_reward')}:</span>
-              ${rewards.map(r => `<span class="quest-reward">${r}</span>`).join('')}
-            </div>
+        <div class="quest-icon">${def.icon}</div>
+        <div class="quest-body">
+          <div class="quest-title">${window.t(def.titleKey)}</div>
+          <div class="quest-desc">${window.t(def.descKey)}</div>
+          <div class="quest-progress-row">
+            <span class="quest-count">${Math.min(value, def.goal)} / ${def.goal}</span>
+            <span class="quest-status">${claimed ? window.t('quest_claimed') : (done ? window.t('quest_done') : '')}</span>
+          </div>
+          <div class="quest-track">
+            <div class="quest-fill ${done ? 'is-complete' : ''}" style="width: ${claimed ? 100 : percent}%"></div>
+          </div>
+          <div class="quest-rewards">
+            <span class="quest-reward-label">${window.t('quest_reward')}:</span>
+            ${rewards.map(r => `<span class="quest-reward">${r}</span>`).join('')}
           </div>
         </div>
-        ${actionHtml}
+        <div class="quest-action">${actionHtml}</div>
       </div>
     `;
   }).join('');
@@ -68,6 +69,10 @@ window.renderQuestsScreen = function(root) {
     <div class="quests-list">${cardsHtml}</div>
 
     ${allClaimed ? `<div class="quests-done-banner">🏆 ${window.t('quests_empty')}</div>` : ''}
+
+    <button class="bottom-back-btn" onclick="window.navigate('menu')">
+      <span class="back-arrow">←</span> ${window.t('back')}
+    </button>
   `;
 };
 

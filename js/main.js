@@ -28,15 +28,19 @@ window.i18n = {
     ad_button: 'Смотреть рекламу', ad_reward: '+200 ₽ за рекламу', ad_cooldown: 'Кулдаун',
     rookie_badge: '🌱 Новичок — удача на твоей стороне',
     // Уровни и XP
-    level_short: 'УР.', level_up: '🎉 Новый уровень: {level}!',
+    level_short: 'Ур.', level_up: '🎉 Новый уровень: {level}!',
     // Ежедневные квесты
     quests_title: 'Ежедневные квесты', quests_subtitle: 'Выполняй задания и забирай награды. Квесты обновляются каждый день.',
-    quest_spins: 'Крутить 5 раз', quest_jobs: 'Сделать 3 подработки', quest_plates: 'Надеть 1 номер на машину',
+    quest_spins: 'Испытай удачу', quest_jobs: 'Подработки', quest_plates: 'Тюнинг номера',
+    quest_spins_desc: 'Закрути рулетку 5 раз и испытай удачу.',
+    quest_jobs_desc: 'Закрой 3 любые подработки в гараже.',
+    quest_plates_desc: 'Повесь любой номер на свою тачку.',
     quest_reward: 'Награда', quest_claim: 'Забрать', quest_claimed: 'Забрано',
     quest_in_progress: 'В процессе', quest_done: 'Готово!', quest_claim_success: 'Награда получена!',
     quests_empty: 'Все квесты на сегодня выполнены!',
     // Рефералка
     referral_title: 'Реферальная программа', referral_subtitle: 'Приглашай друзей в Garage Spin',
+    referral_pass: 'ПРОПУСК',
     referral_your_code: 'Твой реферальный код', referral_copy: 'Копировать', referral_copied: 'Код скопирован!',
     referral_copy_failed: 'Не удалось скопировать. Выдели код вручную.',
     referral_invite: 'Пригласить друга',
@@ -71,15 +75,19 @@ window.i18n = {
     ad_button: 'Watch ad', ad_reward: '+$200 for ad', ad_cooldown: 'Cooldown',
     rookie_badge: '🌱 Rookie — luck is on your side',
     // Levels & XP
-    level_short: 'LVL', level_up: '🎉 New level: {level}!',
+    level_short: 'Lvl', level_up: '🎉 New level: {level}!',
     // Daily quests
     quests_title: 'Daily Quests', quests_subtitle: 'Complete tasks and claim rewards. Quests reset every day.',
-    quest_spins: 'Spin 5 times', quest_jobs: 'Complete 3 jobs', quest_plates: 'Equip 1 plate on a car',
+    quest_spins: 'Try your luck', quest_jobs: 'Side hustle', quest_plates: 'Plate tuning',
+    quest_spins_desc: 'Spin the wheel 5 times and test your luck.',
+    quest_jobs_desc: 'Finish any 3 jobs at the garage.',
+    quest_plates_desc: 'Put any plate on your car.',
     quest_reward: 'Reward', quest_claim: 'Claim', quest_claimed: 'Claimed',
     quest_in_progress: 'In progress', quest_done: 'Done!', quest_claim_success: 'Reward claimed!',
     quests_empty: 'All quests for today are completed!',
     // Referral
     referral_title: 'Referral program', referral_subtitle: 'Invite friends to Garage Spin',
+    referral_pass: 'INVITE PASS',
     referral_your_code: 'Your referral code', referral_copy: 'Copy', referral_copied: 'Code copied!',
     referral_copy_failed: 'Could not copy. Select the code manually.',
     referral_invite: 'Invite a friend',
@@ -192,11 +200,17 @@ window.xpBarHtml = function() {
   const info = window.getXpInfo();
   return `
     <div class="xp-bar-wrap">
-      <div class="xp-bar-top">
-        <span class="xp-level">${window.t('level_short')} ${info.level}</span>
-        <span class="xp-text">${info.xp} / ${info.need} XP</span>
+      <div class="xp-level-badge">
+        <span class="xp-level-num">${info.level}</span>
+        <span class="xp-level-cap">${window.t('level_short')}</span>
       </div>
-      <div class="xp-track"><div class="xp-fill" style="width: ${info.percent}%"></div></div>
+      <div class="xp-bar-body">
+        <div class="xp-bar-top">
+          <span class="xp-text">${window.t('level_short')} ${info.level} <span class="xp-dot">•</span> ${info.xp}/${info.need} XP</span>
+          <span class="xp-percent">${info.percent}%</span>
+        </div>
+        <div class="xp-track"><div class="xp-fill" style="width: ${info.percent}%"></div></div>
+      </div>
     </div>
   `;
 };
