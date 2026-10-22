@@ -4,7 +4,7 @@ window.renderGarageScreen = function(root) {
   let carsHtml = state.cars.map(car => {
     const plate = car.plateId ? state.plates.find(p => p.id === car.plateId) : null;
     const plateHtml = plate
-      ? `<div class="plate-badge-wrap">${window.PLATES_DATA.render(plate, { size: 'sm' })}</div>`
+      ? `<div class="plate-badge">${plate.formatted}</div>`
       : `<div style="color:var(--text-dim); font-size:12px; margin-top:10px;">—</div>`;
     
     return `
@@ -65,7 +65,7 @@ window.openPlateModal = function(carId) {
       <div class="modal-list">
         ${availablePlates.map(p => `
           <div class="plate-row" onclick="window.equipPlate('${carId}', '${p.id}'); this.closest('.modal-overlay').remove();">
-            <div class="plate-badge-wrap">${window.PLATES_DATA.render(p, { size: 'sm' })}</div>
+            <div class="plate-badge">${p.formatted}</div>
             <div style="color:var(--${p.rarity.toLowerCase()}); font-size:12px;">${p.rarity} +${Math.round((p.incomeBonus||0)*100)}%</div>
           </div>
         `).join('')}
@@ -105,8 +105,8 @@ window.renderPlatesInventory = function(root) {
     const isEquipped = p.equippedCarId !== null;
     return `
       <div class="plate-inv-row">
-        <div style="flex:1; min-width:0;">
-          <div class="plate-badge-wrap">${window.PLATES_DATA.render(p, { size: 'sm' })}</div>
+        <div style="flex:1;">
+          <div class="plate-badge">${p.formatted}</div>
           <div style="color:var(--${p.rarity.toLowerCase()}); font-size:12px; margin-top:4px;">${p.rarity} • ${p.country}</div>
         </div>
         ${isEquipped 
